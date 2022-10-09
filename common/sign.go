@@ -11,12 +11,13 @@ import (
 )
 
 
-func GetSign(privateHex string) string {
+
+func GetSign(privateHex string) (string, string, int64) {
 	//privateHex := "ae78c8b502571dba876742437f8bc78b689cf8518356c0921393d89caaf284ce"
 	privateKey, err := crypto.HexToECDSA(privateHex)
 
 	if err != nil {
-		return ""
+		return "", "", 0
 	}
 
 	publicKey := privateKey.Public()
@@ -31,7 +32,7 @@ func GetSign(privateHex string) string {
 	extTime := time.Now().Unix()
 	message := []byte(addr + ":" + strconv.FormatInt(extTime, 10))
 	sign, _ := crypto.Sign(signHash(message), privateKey)
-	return hexutil.Encode(sign)
+	return addr, hexutil.Encode(sign), extTime
 }
 
 func signHash(data []byte) []byte {

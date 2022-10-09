@@ -36,7 +36,7 @@ type CheckUserExistRespData struct {
 }
 
 func (s *CheckUserExist) TestCheckUserExistCase00(goCheck *C) {
-	//
+	//校验addr不存在，CheckUserExist接口返回is_exist=false
 	privateHex := "ae78c8b502571dba876742437f8bc78b689cf8518356c0921393d89caaf284ce"
 	sign := common.GetSign(privateHex)
 	fmt.Println("sign: ", sign)
