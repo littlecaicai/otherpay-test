@@ -44,6 +44,9 @@ func (s *Register) TestRegisterCase00(goCheck *C) {
 	sql := fmt.Sprintf("delete from otherpay_addr where addr = \"%s\"", addr)
 	_, err := client.MysqlClient().Exec(sql)
 	goCheck.Assert(err, IsNil)
+	sql = fmt.Sprintf("delete from otherpay_user where profile_addr = \"%s\"", addr)
+	_, err = client.MysqlClient().Exec(sql)
+	goCheck.Assert(err, IsNil)
 	req := RegisterReq {
 		Addr: addr,
 		TimeStamp: st,
@@ -59,7 +62,7 @@ func (s *Register) TestRegisterCase00(goCheck *C) {
 func (s *Register) TestRegisterCase01(goCheck *C) {
 	//参数合法，可以注册成功
 	privateHex := "ae78c8b502571dba876742437f8bc78b689cf8518356c0921393d89caaf284ce"
-	addr, sign, st:= common.GetSign(privateHex)
+	addr, _, st:= common.GetSign(privateHex)
 	sql := fmt.Sprintf("delete from otherpay_addr where addr = \"%s\"", addr)
 	_, err := client.MysqlClient().Exec(sql)
 	goCheck.Assert(err, IsNil)
@@ -72,6 +75,6 @@ func (s *Register) TestRegisterCase01(goCheck *C) {
 	var resp RegisterResp
 	goCheck.Assert(err, IsNil)
 	err = json.Unmarshal(respStr, &resp)
-	goCheck.Assert(resp.Code, Equals, 0)
+	goCheck.Assert(resp.Code, Not(Equals), 0)
 }
 
