@@ -2,14 +2,9 @@ package common
 
 import (
 	"bytes"
-	"net/http"
 	"io/ioutil"
+	"net/http"
 )
-
-
-
-
-
 
 
 func DoPost(url, data string) (resp []byte, err error) {

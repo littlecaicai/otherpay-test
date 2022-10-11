@@ -2,7 +2,9 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	. "gopkg.in/check.v1"
+	"otherpay-test/client"
 	"otherpay-test/common"
 )
 
@@ -39,6 +41,10 @@ func (s *Register) TestRegisterCase00(goCheck *C) {
 	//参数合法，可以注册成功
 	privateHex := "ae78c8b502571dba876742437f8bc78b689cf8518356c0921393d89caaf284ce"
 	addr, sign, st:= common.GetSign(privateHex)
+	fmt.Println("addr: ", addr)
+	sql := fmt.Sprintf("delete from otherpay_addr where addr = \"%s\"", addr)
+	_, err := client.MysqlClient().Exec(sql)
+	goCheck.Assert(err, IsNil)
 	req := RegisterReq {
 		Addr: addr,
 		TimeStamp: st,
