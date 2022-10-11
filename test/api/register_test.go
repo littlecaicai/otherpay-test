@@ -60,7 +60,7 @@ func (s *Register) TestRegisterCase00(goCheck *C) {
 }
 
 func (s *Register) TestRegisterCase01(goCheck *C) {
-	//参数合法，可以注册成功
+	//参数不合法，注册失败
 	privateHex := "ae78c8b502571dba876742437f8bc78b689cf8518356c0921393d89caaf284ce"
 	addr, _, st:= common.GetSign(privateHex)
 	sql := fmt.Sprintf("delete from otherpay_addr where addr = \"%s\"", addr)
