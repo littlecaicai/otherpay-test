@@ -1,12 +1,13 @@
 package index3
 
 import (
-	//"encoding/json"
+	"encoding/json"
 	"fmt"
+	. "gopkg.in/check.v1"
 	"otherpay-test/client"
 	"otherpay-test/common"
-	. "gopkg.in/check.v1"
-        "testing"
+	"testing"
+	"github.com/tendermint/tendermint/libs/bytes"
 
 	"time"
 )
@@ -39,6 +40,13 @@ type ResponseToken struct {
 	Token string `json:"token"`
 }
 
+type Response struct {
+	Code    uint32         `json:"code"`
+	Message string         `json:"message"`
+	TX      bytes.HexBytes `json:"tx,omitempty"`
+	Data    interface{}    `json:"data,omitempty"`
+}
+
 
 
 
@@ -63,6 +71,20 @@ func (s *LoginOrRegister) TestRegisterCase00(goCheck *C) {
 	}
 	respStr, err := common.DoPost(urlLoginOrRegister, common.ConvToJSON(req))
 	goCheck.Assert(err, IsNil)
+	var resp Response
+	err = json.Unmarshal(respStr, &resp)
+	goCheck.Assert(err, IsNil)
+	goCheck.Assert(resp.Code, Equals, uint32(0))
+	respToken := resp.Data.(ResponseToken)
+	goCheck.Assert(len(respToken.Token), Not(Equals), 0)
+	sql = fmt.Sprintf("select address from mirror_user where address = \"%s\"", addr)
+	rows, err := client.MysqlClientIndex3().Query(sql)
+	var address string
+	for rows.Next() {
+		rows.Scan(&address)
+		break
+	}
+	goCheck.Assert(address, Equals, addr)
 	fmt.Println(string(respStr))
 }
 
