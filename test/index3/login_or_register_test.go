@@ -6,10 +6,13 @@ import (
 	"otherpay-test/client"
 	"otherpay-test/common"
 	. "gopkg.in/check.v1"
+        "testing"
+
 	"time"
 )
 
 
+func Test(t *testing.T) { TestingT(t) }
 
 
 type LoginOrRegister struct {
@@ -18,7 +21,7 @@ type LoginOrRegister struct {
 var _ = Suite(&LoginOrRegister{})
 
 var (
-	urlLoginOrRegister string = "http://localhost:8765/login_or_register"
+	urlLoginOrRegister string = "http://localhost:8765/v1/login_or_register"
 )
 
 type CheckInfo struct {
@@ -47,7 +50,7 @@ func (s *LoginOrRegister) TestRegisterCase00(goCheck *C) {
 	privateHex := "ae78c8b502571dba876742437f8bc78b689cf8518356c0921393d89caaf284ce"
 	msg := "I am registing for index3 "
 	addr, sign := common.GetSignNew(privateHex, msg)
-	sql := fmt.Sprintf("delete from mirror_user where addr = \"%s\"", addr)
+	sql := fmt.Sprintf("delete from mirror_user where address = \"%s\"", addr)
 	_, err := client.MysqlClientIndex3().Exec(sql)
 	goCheck.Assert(err, IsNil)
 	req := RequestLoginOrRegister{
