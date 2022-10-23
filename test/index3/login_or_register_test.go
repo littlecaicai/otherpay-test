@@ -20,7 +20,7 @@ type LoginOrRegister struct {
 var _ = Suite(&LoginOrRegister{})
 
 var (
-	urlLoginOrRegister string = "http://localhost:8765/v1/login_or_register"
+	urlLoginOrRegister = "http://localhost:8765/v1/login_or_register"
 )
 
 type CheckInfo struct {
@@ -45,7 +45,7 @@ type Response struct {
 	Data    interface{}    `json:"data,omitempty"`
 }
 
-func (s *LoginOrRegister) TestRegisterCase00(goCheck *C) {
+func (s *LoginOrRegister) TestLoginOrRegisterCase00(goCheck *C) {
 	//参数合法，可以注册成功
 	privateHex := "ae78c8b502571dba876742437f8bc78b689cf8518356c0921393d89caaf284ce"
 	msg := "I am registing for index3 "
@@ -82,7 +82,7 @@ func (s *LoginOrRegister) TestRegisterCase00(goCheck *C) {
 	fmt.Println(string(respStr))
 }
 
-func (s *LoginOrRegister) TestRegisterCase01(goCheck *C) {
+func (s *LoginOrRegister) TestLoginOrRegisterCase01(goCheck *C) {
 	//参数不合法，校验失败
 	privateHex := "ae78c8b502571dba876742437f8bc78b689cf8518356c0921393d89caaf284ce"
 	msg := "I am registing for index3 "
