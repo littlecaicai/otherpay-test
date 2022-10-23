@@ -104,19 +104,7 @@ func (s *LoginOrRegister) TestRegisterCase01(goCheck *C) {
 	var resp Response
 	err = json.Unmarshal(respStr, &resp)
 	goCheck.Assert(err, IsNil)
-	goCheck.Assert(resp.Code, Equals, uint32(0))
-	respToken := resp.Data.(map[string]interface{})
-
-	goCheck.Assert(len(respToken["token"].(string)), Not(Equals), 0)
-	sql = fmt.Sprintf("select address from mirror_user where address = \"%s\"", addr)
-	rows, err := client.MysqlClientIndex3().Query(sql)
-	var address string
-	for rows.Next() {
-		rows.Scan(&address)
-		break
-	}
-	goCheck.Assert(address, Equals, addr)
-	fmt.Println(string(respStr))
+	goCheck.Assert(resp.Code, Not(Equals), uint32(0))
 }
 
 //func (s *LoginOrRegister) TestRegisterCase01(goCheck *C) {
