@@ -7,6 +7,7 @@ import (
 
 type ServiceConfig struct {
 	MysqlCfg MysqlConfig `toml:"mysql"`
+	MysqlIndex3Cfg MysqlConfig `toml:"mysql_index3"`
 }
 
 type MysqlConfig struct {

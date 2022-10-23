@@ -7,10 +7,19 @@ import (
 )
 
 var DB *sql.DB
+var DBIndex3  *sql.DB
 
 func MysqlClient() *sql.DB {
 	if DB == nil {
 		config := common.SerConf.MysqlCfg
+		InitDB(config)
+	}
+	return DB
+}
+
+func MysqlClientIndex3() *sql.DB {
+	if DB == nil {
+		config := common.SerConf.MysqlIndex3Cfg
 		InitDB(config)
 	}
 	return DB
