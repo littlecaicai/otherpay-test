@@ -2,7 +2,9 @@ package index3
 
 import (
 	"encoding/json"
+	"fmt"
 	. "gopkg.in/check.v1"
+	"otherpay-test/client"
 	"otherpay-test/common"
 	"time"
 )
@@ -46,7 +48,12 @@ func (s *UserNotifyRead) TestUserNotifyReadCase00(goCheck *C) {
 	err = json.Unmarshal(respStr, &respUserNotifyRead)
 	goCheck.Assert(err, IsNil)
 	goCheck.Assert(respUserNotifyRead.Code, Equals, uint32(0))
-	replays := respUserNotifyRead.Data.(Replays)
-	goCheck.Assert(len(replays), Not(Equals), 0)
-	//时间倒序无法校验
+	sql := fmt.Sprintf("select count from user_notify where address = \"%s\"", addr)
+	rows, err := client.MysqlClientIndex3().Query(sql)
+	goCheck.Assert(err, IsNil)
+	num := 1
+	for rows.Next() {
+		rows.Scan(&num)
+	}
+	goCheck.Assert(num, Equals, 0)
 }

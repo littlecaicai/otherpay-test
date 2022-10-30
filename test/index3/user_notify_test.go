@@ -99,5 +99,4 @@ func (s *UserNotify) TestUserNotifyCase00(goCheck *C) {
 	goCheck.Assert(respUserNotify.Code, Equals, uint32(0))
 	replays := respUserNotify.Data.(Replays)
 	goCheck.Assert(len(replays), Not(Equals), 0)
-	//时间倒序无法校验
 }

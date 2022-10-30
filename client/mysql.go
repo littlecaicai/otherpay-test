@@ -12,30 +12,30 @@ var DBIndex3  *sql.DB
 func MysqlClient() *sql.DB {
 	if DB == nil {
 		config := common.SerConf.MysqlCfg
-		InitDB(config)
+		DB, _ = GetDB(config)
 	}
 	return DB
 }
 
 func MysqlClientIndex3() *sql.DB {
-	if DB == nil {
+	if DBIndex3 == nil {
 		config := common.SerConf.MysqlIndex3Cfg
-		InitDB(config)
+		DBIndex3, _ = GetDB(config)
 	}
-	return DB
+	return DBIndex3
 }
 
 
-func InitDB(config common.MysqlConfig) (err error) {
+func GetDB(config common.MysqlConfig) (*sql.DB, error) {
 	dsn := config.Dsn
-	DB, err = sql.Open("mysql", dsn)
+	db, err := sql.Open("mysql", dsn)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	// 尝试与数据库建立连接（校验dsn是否正确）
-	err = DB.Ping()
+	err = db.Ping()
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return db, nil
 }
