@@ -86,7 +86,8 @@ func (s *UserNotify) TestUserNotifyCase00(goCheck *C) {
 	err = json.Unmarshal(respStr, &resp)
 	goCheck.Assert(err, IsNil)
 	goCheck.Assert(resp.Code, Equals, uint32(0))
-	token := resp.Data.(ResponseToken).Token
+	token := resp.Data.(map[string]interface {})["token"].(string)
+	//token := resp.Data.(ResponseToken).Token
 	reqUserNotify := RequestToken{
 		Address: addr,
 		Token:   token,

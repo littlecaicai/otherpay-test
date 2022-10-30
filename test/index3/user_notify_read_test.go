@@ -37,12 +37,11 @@ func (s *UserNotifyRead) TestUserNotifyReadCase00(goCheck *C) {
 	err = json.Unmarshal(respStr, &resp)
 	goCheck.Assert(err, IsNil)
 	goCheck.Assert(resp.Code, Equals, uint32(0))
-	token := resp.Data.(ResponseToken).Token
+	token := resp.Data.(map[string]interface {})["token"].(string)
 	reqUserNotifyRead := RequestToken{
 		Address: addr,
 		Token:   token,
 	}
-
 	respStr, err = common.DoPost(UserNotifyReadUrl, common.ConvToJSON(reqUserNotifyRead))
 	var respUserNotifyRead Response
 	err = json.Unmarshal(respStr, &respUserNotifyRead)
@@ -51,7 +50,7 @@ func (s *UserNotifyRead) TestUserNotifyReadCase00(goCheck *C) {
 	sql := fmt.Sprintf("select count from user_notify where address = \"%s\"", addr)
 	rows, err := client.MysqlClientIndex3().Query(sql)
 	goCheck.Assert(err, IsNil)
-	num := 1
+	num := 0
 	for rows.Next() {
 		rows.Scan(&num)
 	}

@@ -29,13 +29,13 @@ func (s *UserNotifyCount) TestUserNotifyCountCase00(goCheck *C) {
 		},
 		LoginTime: time.Now().Unix(),
 	}
-	respStr, err := common.DoPost(UserNotifyCountUrl, common.ConvToJSON(req))
+	respStr, err := common.DoPost(urlLoginOrRegister, common.ConvToJSON(req))
 	goCheck.Assert(err, IsNil)
 	var resp Response
 	err = json.Unmarshal(respStr, &resp)
 	goCheck.Assert(err, IsNil)
 	goCheck.Assert(resp.Code, Equals, uint32(0))
-	token := resp.Data.(ResponseToken).Token
+	token := resp.Data.(map[string]interface {})["token"].(string)
 	reqUserNotifyCount := RequestToken{
 		Address: addr,
 		Token:   token,
